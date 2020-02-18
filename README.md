@@ -65,4 +65,6 @@ You have to set a development team to be able to deploy the app to your device.
 
 > NOTE: If not networks appear in the list repeat the process by first forgetting the ESP32 from the Bluetooth list (see above)
 
+Once the network credentials are set on the ESP32, you should see in the serial monitor window that the ESP32 connects to the network and sends a bunch of messages to AWS IoT Core.
+
 
