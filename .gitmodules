@@ -1,0 +1,3 @@
+[submodule "amazon-freertos-ble-ios-sdk"]
+	path = amazon-freertos-ble-ios-sdk
+	url = https://github.com/massi-ang/amazon-freertos-ble-ios-sdk.git

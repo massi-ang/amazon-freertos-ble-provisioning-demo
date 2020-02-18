@@ -1,0 +1,7 @@
+{
+    "afr_source_dir":"../..",
+    "thing_name":"FreeRTOS_BLE",
+    "wifi_ssid":"$wifi_ssid",
+    "wifi_password":"$wifi_password",
+    "wifi_security":"eWiFiSecurityWPA2"
+}
