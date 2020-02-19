@@ -299,37 +299,37 @@ BaseType_t getUserMessage(INPUTMessage_t *pxINPUTmessage,
                           TickType_t xAuthTimeout)
 {
     uart_event_t xEvent;
-    BaseType_t xReturnMessage = pdFALSE;
+    BaseType_t xReturnMessage = pdTRUE; //pdFALSE;
 
     if (xQueueReceive(spp_uart_queue, (void *)&xEvent, (portTickType)xAuthTimeout))
     {
-        switch (xEvent.type)
-        {
-        /*Event of UART receiving data */
-        case UART_DATA:
+    //     switch (xEvent.type)
+    //     {
+    //     /*Event of UART receiving data */
+    //     case UART_DATA:
 
-            if (xEvent.size)
-            {
-                pxINPUTmessage->pcData = (uint8_t *)malloc(sizeof(uint8_t) * xEvent.size);
+    //         if (xEvent.size)
+    //         {
+    //             pxINPUTmessage->pcData = (uint8_t *)malloc(sizeof(uint8_t) * xEvent.size);
 
-                if (pxINPUTmessage->pcData != NULL)
-                {
-                    memset(pxINPUTmessage->pcData, 0x0, xEvent.size);
-                    uart_read_bytes(UART_NUM_0, (uint8_t *)pxINPUTmessage->pcData, xEvent.size, portMAX_DELAY);
-                    xReturnMessage = pdTRUE;
-                }
-                else
-                {
-                    configPRINTF(("Malloc failed in main.c\n"));
-                }
-            }
+    //             if (pxINPUTmessage->pcData != NULL)
+    //             {
+    //                 memset(pxINPUTmessage->pcData, 0x0, xEvent.size);
+    //                 uart_read_bytes(UART_NUM_0, (uint8_t *)pxINPUTmessage->pcData, xEvent.size, portMAX_DELAY);
+    //                 xReturnMessage = pdTRUE;
+    //             }
+    //             else
+    //             {
+    //                 configPRINTF(("Malloc failed in main.c\n"));
+    //             }
+    //         }
 
-            break;
+    //         break;
 
-        default:
-            break;
-        }
-    }
+    //     default:
+    //         break;
+    //     }
+    // }
 
     return xReturnMessage;
 }
