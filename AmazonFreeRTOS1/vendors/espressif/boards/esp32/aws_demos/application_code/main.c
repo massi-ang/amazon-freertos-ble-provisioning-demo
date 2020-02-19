@@ -72,6 +72,8 @@
 #include "iot_network_manager_private.h"
 #include "iot_init.h"
 
+#include "driver/gpio.h"
+
 #if BLE_ENABLED
 #include "bt_hal_manager_adapter_ble.h"
 #include "bt_hal_manager.h"
@@ -381,6 +383,12 @@ void vApplicationIPNetworkEventHook(eIPCallbackEvent_t eNetworkEvent)
 }
 #endif
 
+void vLedBlinkCallback(TimerHandle_t xTimer) {
+    GPIO_OUTPUT_SET(32, 1);
+    vTaskDelay(pdMS_TO_TICKS(500UL));
+    GPIO_OUTPUT_SET(32, 0);
+}
+
 void vNetworkChangedCB(uint32_t ulNetworkType,
                        AwsIotNetworkState_t xNetworkState,
                        void *pvContext)
@@ -459,6 +467,9 @@ int vInitialize()
             }
         }
 
+
+        
+
         if (status == EXIT_SUCCESS)
         {
             /* Wait for network configured for the demo to be initialized. */
@@ -466,10 +477,21 @@ int vInitialize()
 
             if (puConnectedNetwork == AWSIOT_NETWORK_TYPE_NONE)
             {
+                TimerHandle_t xTimer = xTimerCreate("led_timer", pdMS_TO_TICKS(1000UL), pdTRUE, 0, vLedBlinkCallback);
+
+                if (xTimer == NULL)
+                {
+                    configPRINTF(("Unable to create the timer for led blinking\n"));
+                }
+                else
+                {
+                    xTimerStart(xTimer, 0);
+                }
                 /* Network not yet initialized. Block for a network to be intialized. */
                 IotLogInfo("No networks connected for the demo. Waiting for a network connection. ");
                 IotSemaphore_Wait(&xNetworkSemaphore);
                 puConnectedNetwork = AwsIotNetworkManager_GetConnectedNetworks() & AWSIOT_NETWORK_TYPE_WIFI;
+                xTimerStop(xTimer, 0);
             }
         }
 
@@ -488,7 +510,7 @@ int vInitialize()
                 IotSdk_Cleanup();
             }
         }
-
+       
         return status == 0 ? pdPASS : pdFAIL;
     }
 }
