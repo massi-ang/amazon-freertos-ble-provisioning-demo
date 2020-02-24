@@ -85,6 +85,8 @@
 #include "iot_ble_numericComparison.h"
 #endif
 
+#define LED_PIN (32)
+
 /* Logging Task Defines. */
 #define mainLOGGING_MESSAGE_QUEUE_LENGTH (32)
 #define mainLOGGING_TASK_STACK_SIZE (configMINIMAL_STACK_SIZE * 4)
@@ -155,7 +157,7 @@ int app_main(void)
 #endif /* if BLE_ENABLED */
         if (vInitialize() == pdTRUE)
         {
-            configPRINTF(("Network Inititalized - now running the demos\n "));
+            configPRINTF(("Network Inititalized\n "));
             DEMO_RUNNER_RunDemos();
         }
     }
@@ -383,10 +385,12 @@ void vApplicationIPNetworkEventHook(eIPCallbackEvent_t eNetworkEvent)
 }
 #endif
 
+
+// Blinks a led every 1s with 50% duty cycle
 void vLedBlinkCallback(TimerHandle_t xTimer) {
-    GPIO_OUTPUT_SET(32, 1);
+    GPIO_OUTPUT_SET(LED_PIN, 1);
     vTaskDelay(pdMS_TO_TICKS(500UL));
-    GPIO_OUTPUT_SET(32, 0);
+    GPIO_OUTPUT_SET(LED_PIN, 0);
 }
 
 void vNetworkChangedCB(uint32_t ulNetworkType,

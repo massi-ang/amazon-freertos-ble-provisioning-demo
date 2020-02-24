@@ -30,6 +30,7 @@ mkdir build
 cmake -DVENDOR=espressif -DBOARD=esp32_wrover_kit -DCOMPILER=xtensa-esp32 -S . -B build
 cd build
 make all -j4
+esptool.py --port /dev/cu.SLAB_USBtoUART erase_flash
 make flash
 ```
 
