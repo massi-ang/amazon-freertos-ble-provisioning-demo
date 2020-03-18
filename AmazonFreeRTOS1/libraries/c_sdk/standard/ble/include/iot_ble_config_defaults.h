@@ -160,7 +160,7 @@
  * By default bonding will be enabled on all device.
  */
 #ifndef IOT_BLE_ENABLE_BONDING
-    #define IOT_BLE_ENABLE_BONDING    ( 1 )
+    #define IOT_BLE_ENABLE_BONDING    ( 0 )
 #endif
 
 /**
@@ -169,7 +169,7 @@
  * By default secure connection will be enable on all device.
  */
 #ifndef IOT_BLE_ENABLE_SECURE_CONNECTION
-    #define IOT_BLE_ENABLE_SECURE_CONNECTION    ( 1 )
+    #define IOT_BLE_ENABLE_SECURE_CONNECTION    ( 0 )
 #endif
 
 /* Config if set, requires encryption to access services and characteristics */
@@ -178,7 +178,7 @@
  * @brief Configuration to force encryption to access all characteristics of services.
  */
 #ifndef IOT_BLE_ENCRYPTION_REQUIRED
-    #define IOT_BLE_ENCRYPTION_REQUIRED    ( 1 )
+    #define IOT_BLE_ENCRYPTION_REQUIRED    ( 0 )
 #endif
 
 /**
@@ -188,7 +188,7 @@
  * device will use just works pairing.
  */
 #ifndef IOT_BLE_ENABLE_NUMERIC_COMPARISON
-    #define IOT_BLE_ENABLE_NUMERIC_COMPARISON    ( 1 )
+    #define IOT_BLE_ENABLE_NUMERIC_COMPARISON    ( 0 )
 #endif
 
 /**
@@ -271,7 +271,7 @@
  */
 #if ( IOT_BLE_ENABLE_FREERTOS_GATT_SERVICES == 1 )
     #ifndef IOT_BLE_ENABLE_MQTT
-        #define IOT_BLE_ENABLE_MQTT    ( 1 )
+        #define IOT_BLE_ENABLE_MQTT    ( 0 )
     #endif
 #else
     #define IOT_BLE_ENABLE_MQTT        ( 0 )
