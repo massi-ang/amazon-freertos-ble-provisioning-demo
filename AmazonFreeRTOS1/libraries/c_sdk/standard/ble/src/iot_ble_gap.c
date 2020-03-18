@@ -244,6 +244,20 @@ void _adapterPropertiesCb( BTStatus_t status,
                            BTProperty_t * pProperties )
 {
     _BTInterface.cbStatus = status;
+    if (status == eBTStatusSuccess) { 
+        for (int n=0; n<numProperties; n++) {
+            BTProperty_t prop = pProperties[n];
+            if (prop.xType == eBTpropertyAdapterBondedDevices) {
+                int num_bonds = prop.xLen / sizeof(BTAddrType_t);
+                BTBdaddr_t *bonds = prop.pvVal;
+                for (int i=0; i<num_bonds; i++) {
+                    configPRINTF(("Device[%d] = %x:%x:%x:%x:%x:%x\n", i, bonds[i].ucAddress[0], bonds[i].ucAddress[1], 
+                        bonds[i].ucAddress[2], bonds[i].ucAddress[3], 
+                        bonds[i].ucAddress[4], bonds[i].ucAddress[5]));
+                }
+            }
+        }
+    }
     IotSemaphore_Post( &_BTInterface.callbackSemaphore );
 }
 
@@ -619,6 +633,17 @@ BTStatus_t IotBle_Init( void )
         }
     }
 
+    if( status == eBTStatusSuccess )
+    {
+        IotLogInfo("Getting bonded devices");
+        status = _BTInterface.pBTInterface->pxGetDeviceProperty(eBTpropertyAdapterBondedDevices);
+        if (status == eBTStatusSuccess) {
+            IotSemaphore_Wait(  &_BTInterface.callbackSemaphore );
+            status = _BTInterface.cbStatus;
+        }
+    }
+
+
     /* Set GAP properties. */
     if( status == eBTStatusSuccess )
     {
@@ -744,6 +769,12 @@ BTStatus_t IotBle_Init( void )
 BTStatus_t IotBle_ConfirmNumericComparisonKeys( BTBdaddr_t * pBdAddr,
                                                 bool keyAccepted )
 {
+    IotLogInfo("Getting bonded devices");
+    BTStatus_t status = _BTInterface.pBTInterface->pxGetDeviceProperty(eBTpropertyAdapterBondedDevices);
+    if (status == eBTStatusSuccess) {
+        IotSemaphore_Wait(  &_BTInterface.callbackSemaphore );
+    }
+    // We do not care if the above call fails, since this is only for informational purposes
     return _BTInterface.pBTInterface->pxSspReply( pBdAddr,
                                                   eBTsspVariantPasskeyConfirmation,
                                                   keyAccepted,

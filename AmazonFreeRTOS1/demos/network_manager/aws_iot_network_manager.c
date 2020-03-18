@@ -395,7 +395,10 @@ static IotNetworkManager_t networkManager =
 
         if( isConnected == true )
         {
-            IotLogInfo( "BLE Connected to remote device, connId = %d\n", connectionID );
+            IotLogInfo( "BLE Connected to remote device %x:%x:%x:%x:%x:%x, connId = %d\n", pRemoteAddress->ucAddress[0], pRemoteAddress->ucAddress[1],
+                pRemoteAddress->ucAddress[2], pRemoteAddress->ucAddress[3],
+                pRemoteAddress->ucAddress[4], pRemoteAddress->ucAddress[5], 
+                connectionID );
             IotBle_StopAdv( NULL );
             newState = eNetworkStateEnabled;
         }
