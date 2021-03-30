@@ -7,7 +7,9 @@ export class CdkStack extends cdk.Stack {
     super(scope, id, props);
 
     let userpool = new cognito.UserPool(this, 'freertosiosapp', {
-      autoVerifiedAttributes: [cognito.UserPoolAttribute.EMAIL],
+      autoVerify: {
+        email: true
+      }
     })
 
     let appClient = new cognito.UserPoolClient(this, 'appclient', {
